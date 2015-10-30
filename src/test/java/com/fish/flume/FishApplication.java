@@ -43,48 +43,14 @@ public class FishApplication {
 
 	@Before
 	public void setup() throws Exception {
-		// baseDir = Files.createTempDir();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		// FileUtils.deleteDirectory(baseDir);
 	}
-
-	@Test
-	public void testFLUME1854() throws Exception {
-		File configFile = new File(getClass().getClassLoader().getResource("fish-failover-balance.properties")
-				.getFile());
-		// Files.copy(new
-		// File(getClass().getClassLoader().getResource("flume-conf.properties").getFile()),
-		// configFile);
-		Random random = new Random();
-		// for (int i = 0; i < 3; i++) {
-		try {
-			// System.setProperty(Application.CONF_MONITOR_CLASS,
-			// "org.apache.flume.instrumentation.http.HTTPMetricsServer");
-			// System.setProperty(Application.CONF_MONITOR_PREFIX + "port",
-			// "41414");
-
-			EventBus eventBus = new EventBus("test-event-bus");
-			PollingPropertiesFileConfigurationProvider configurationProvider = new PollingPropertiesFileConfigurationProvider(
-					"fish1", configFile, eventBus, 30000);
-			List<LifecycleAware> components = Lists.newArrayList();
-			components.add(configurationProvider);
-			Application application = new Application(components);
-			eventBus.register(application);
-			application.start();
-			Thread.sleep(random.nextInt(1000000000));
-			// application.stop();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// }
-	}
-
 	/**
 	 * 
-	 * @Description:通过PollingPropertiesFileConfigurationProvider加载配置文件
+	 * @Description:通过PollingPropertiesFileConfigurationProvider从文件系统加载配置文件
 	 * @throws Exception
 	 * @author Fish
 	 * @date 2015年10月27日
@@ -92,11 +58,6 @@ public class FishApplication {
 	@Test
 	public void testFlumeToProps() throws Exception {
 		File configFile = new File(getClass().getClassLoader().getResource("fish-es.properties").getFile());
-		// File configFile = new
-		// File(getClass().getClassLoader().getResource("fish-failover-balance.properties")
-		// .getFile());
-		// File configFile = new
-		// File(getClass().getClassLoader().getResource("flume-zookeeper.properties").getFile());
 		Random random = new Random();
 		EventBus eventBus = new EventBus("test-event-bus");
 		PollingPropertiesFileConfigurationProvider configurationProvider = new PollingPropertiesFileConfigurationProvider(
@@ -107,12 +68,11 @@ public class FishApplication {
 		eventBus.register(application);
 		application.start();
 		Thread.sleep(random.nextInt(1000000000));
-		// application.stop();
 	}
 
 	/**
 	 * 
-	 * @Description:通过PollingPropertiesFileConfigurationProvider加载配置文件
+	 * @Description:通过PollingZooKeeperConfigurationProvider从zookeeper中加载配置文件
 	 * @throws Exception
 	 * @author Fish
 	 * @date 2015年10月27日
@@ -129,6 +89,5 @@ public class FishApplication {
 		eventBus.register(application);
 		application.start();
 		Thread.sleep(random.nextInt(1000000000));
-		// application.stop();
 	}
 }
